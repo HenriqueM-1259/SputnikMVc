@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SputnikMVc.Context;
+using SputnikMVc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<MySQLContext>( options =>
 {
     options.UseMySql(configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection")));
 });
+builder.Services.AddScoped<ArtistaService>();
+
 
 var app = builder.Build();
 
