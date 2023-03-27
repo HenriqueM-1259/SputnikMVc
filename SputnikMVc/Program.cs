@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SputnikMVc.Context;
+using SputnikMVc.Helpers;
 using SputnikMVc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<MySQLContext>( options =>
 builder.Services.AddScoped<ArtistaService>();
 builder.Services.AddScoped<AlbumService>();
 builder.Services.AddScoped<YoutubeService>();
+builder.Services.AddScoped<YoutubeMusicaHelper>();
+
 
 
 

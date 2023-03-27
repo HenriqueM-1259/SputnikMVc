@@ -1,0 +1,26 @@
+﻿@model YoutubeExplode.Videos.Video
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="FromContainer">
+    <form asp-action="Create">
+        <h3>Criar Artista</h3>
+        <div class="form-group">
+            <label asp-for="Url" class="control-label"></label>
+            <input asp-for="Url" class="form-control" placeholder="Url Musica" />
+            <span asp-validation-for="Url" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

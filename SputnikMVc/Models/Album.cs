@@ -7,6 +7,7 @@
         public DateTime DataCriacao { get; set; }
         public int ArtistaId { get; set; }
         public Artista Artista { get; set; }
+        public string Path { get; set; }
         public List<Musica> Musicas { get; set; }
     }
 }
