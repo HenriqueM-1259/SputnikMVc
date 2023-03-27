@@ -5,11 +5,11 @@ using SputnikMVc.Services;
 
 namespace SputnikMVc.Controllers
 {
-    public class ArtistaController : Controller
+    public class AlbumController : Controller
     {
-        private readonly ArtistaService _service;
+        private readonly AlbumService _service;
 
-        public ArtistaController(ArtistaService service)
+        public AlbumController(AlbumService service)
         {
             _service = service;
         }
@@ -34,11 +34,11 @@ namespace SputnikMVc.Controllers
         // POST: ArtistaController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Artista artista)
+        public async Task<ActionResult> Create(Album album)
         {
             try
             {
-                await _service.Create(artista);
+                await _service.Create(album);
                 return View("~/Views/Home/Index.cshtml");
             }
             catch

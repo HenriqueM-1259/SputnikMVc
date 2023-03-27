@@ -18,6 +18,10 @@ builder.Services.AddDbContext<MySQLContext>( options =>
     options.UseMySql(configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(configuration.GetConnectionString("DefaultConnection")));
 });
 builder.Services.AddScoped<ArtistaService>();
+builder.Services.AddScoped<AlbumService>();
+builder.Services.AddScoped<YoutubeService>();
+
+
 
 
 var app = builder.Build();

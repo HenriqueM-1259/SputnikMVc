@@ -1,0 +1,34 @@
+﻿@model SputnikMVc.Models.Album
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="FromContainer">
+    <form asp-action="Create">
+        <h3>Criar Album</h3>
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" placeholder="Nome do Album" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArtistaId" class="control-label"></label>
+            <input asp-for="ArtistaId" class="form-control" placeholder="id Artista" />
+            <span asp-validation-for="ArtistaId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
