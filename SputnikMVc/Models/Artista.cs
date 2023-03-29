@@ -13,6 +13,7 @@ namespace SputnikMVc.Models
         public string Nome { get; set; }
         public DateTime DataCriacao { get; set; } = new DateTime();
         public string Path { get; set; }
+        public string PathImg { get; set; }
         public List<Album> MusicaLista { get; set; }
 
     }

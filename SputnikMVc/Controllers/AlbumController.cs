@@ -14,9 +14,10 @@ namespace SputnikMVc.Controllers
             _service = service;
         }
         // GET: ArtistaController
-        public ActionResult Index()
+        public async Task<ActionResult> Index([FromQuery]int idArtista)
         {
-            return View();
+            List<Album> album = await _service.GetAllIdArtista(idArtista);
+            return View(album);
         }
 
         // GET: ArtistaController/Details/5

@@ -13,10 +13,22 @@ namespace SputnikMVc.Context
         public DbSet<Musica> Musicas { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Playlist> Playlists { get; set; }
+        public DbSet<AlbumMusica> albumMusicas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Album>().HasMany(a => a.Musicas).WithOne(m => m.Album).HasForeignKey(m => m.Id);
+            modelBuilder.Entity<AlbumMusica>()
+           .HasKey(am => new { am.AlbumId, am.MusicaId });
+
+            modelBuilder.Entity<AlbumMusica>()
+                .HasOne(am => am.Album)
+                .WithMany(a => a.AlbumMusica)
+                .HasForeignKey(am => am.AlbumId);
+
+            modelBuilder.Entity<AlbumMusica>()
+                .HasOne(am => am.Musica)
+                .WithMany(m => m.AlbumMusica)
+                .HasForeignKey(am => am.MusicaId);
 
             modelBuilder.Entity<Album>()
            .HasOne(a => a.Artista)

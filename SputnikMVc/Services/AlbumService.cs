@@ -14,6 +14,10 @@ namespace SputnikMVc.Services
             _context = context;
         }
 
+        public async Task<List<Album>> GetAllIdArtista(int id)
+        {
+            return _context.Albums.Where(x => x.ArtistaId== id).ToList();
+        }
 
         public async Task<Album> Create(Album album)
         {

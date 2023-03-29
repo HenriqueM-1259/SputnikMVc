@@ -1,4 +1,6 @@
-﻿namespace SputnikMVc.Models
+﻿using SputnikMVc.Models.ViewModel;
+
+namespace SputnikMVc.Models
 {
     public class Album
     {
@@ -8,6 +10,6 @@
         public int ArtistaId { get; set; }
         public Artista Artista { get; set; }
         public string Path { get; set; }
-        public List<Musica> Musicas { get; set; }
+        public List<AlbumMusica> AlbumMusica { get; set; }
     }
 }

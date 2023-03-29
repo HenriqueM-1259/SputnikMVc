@@ -2,3 +2,5 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+var myDiv = document.querySelector(".card");
+console.log(myDiv)

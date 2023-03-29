@@ -1,0 +1,23 @@
+﻿@model List<Album>
+@{
+
+    ViewData["Title"] = "Home Page";
+}
+<div class="card-wrapper">
+    @if (Model != null)
+    {
+
+
+        @foreach (var item in Model)
+        {
+            <div class="card" id="@item.Id">
+                <img src="" alt="">
+                <h2>@item.Title</h2>
+                <button class="player-btn"><i class="fa fa-play"></i></button>
+            </div>
+        }
+
+    ;
+    }
+
+</div>

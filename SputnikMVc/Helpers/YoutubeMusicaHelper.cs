@@ -1,4 +1,5 @@
 ﻿using SputnikMVc.Models;
+using SputnikMVc.Models.ViewModel;
 using SputnikMVc.Services;
 using YoutubeExplode;
 using YoutubeExplode.Common;
@@ -11,20 +12,24 @@ namespace SputnikMVc.Helpers
     {
         private readonly ArtistaService _service;
         private readonly AlbumService _albumService;
-
-        public YoutubeMusicaHelper(ArtistaService service, AlbumService albumService)
+        private readonly MusicaService _musicaService;
+        public YoutubeMusicaHelper(ArtistaService service, AlbumService albumService, MusicaService musica)
         {
             _service = service;
             _albumService = albumService;
+            _musicaService = musica;
         }
 
         public async Task<Artista> CriaArtista(YoutubeExplode.Videos.Video video)
         {
             try
-            {              
+            {
+                var client = new YoutubeClient();
+                var Canal = await client.Channels.GetAsync(video.Author.ChannelId);
                 string Path = "./Artista/";
                 Artista artista = new Artista();
                 artista.Nome = video.Author.Title;
+                var pathArtistaImg = $"~/ArtistaImg/{Canal.Title}.jpg";
                 //verifica se ha artista registrado no sql
                 artista = await _service.GetByName(artista);
                 if (artista == null)
@@ -32,6 +37,7 @@ namespace SputnikMVc.Helpers
                     artista = new Artista();
                     artista.Nome = video.Author.Title;
                     artista.Path = $"/{video.Author.Title}/";
+                    artista.PathImg = pathArtistaImg;
                     artista = await _service.Create(artista);
                 }
 
@@ -39,7 +45,7 @@ namespace SputnikMVc.Helpers
                 // verifica se ha pasta do artista 
                 if (!Directory.Exists(resultPath))
                 {
-                    var canalIcon = video.Thumbnails.FirstOrDefault();
+                    var canalIcon = Canal.Thumbnails.FirstOrDefault();
                     var IconUrl = canalIcon.Url;
 
                     //caso nao exista ele vai registrar no sql e criar a pasta
@@ -47,14 +53,14 @@ namespace SputnikMVc.Helpers
 
                     if (!string.IsNullOrEmpty(IconUrl))
                     {
-                        var client = new HttpClient();
-                        var imageBytes = await client.GetByteArrayAsync(IconUrl);
+                        var clientHttp = new HttpClient();
+                        var imageBytes = await clientHttp.GetByteArrayAsync(IconUrl);
 
                         // Use os bytes da imagem como desejar
 
                         // Salva a imagem na pasta "Artista/Froid"
                            
-                        File.WriteAllBytes($"{resultPath}/{video.Title}.jpg", imageBytes);
+                        File.WriteAllBytes($"./wwwroot/ArtistaImg/{Canal.Title}.jpg", imageBytes);
                     }
                     else
                     {
@@ -116,6 +122,25 @@ namespace SputnikMVc.Helpers
         {
             try
             {
+                Musica musica = new Musica
+                {
+                    Name = video.Title,
+                    PathMusica = $"{album.Path}/${video.Title}",
+                    Description = video.Description,
+                    PathImage = ""
+
+                };
+
+               
+                Musica musicaSQL = await _musicaService.Create(musica);
+                AlbumMusica albumMusica = new AlbumMusica()
+                {
+                   
+                    AlbumId = album.Id,
+                    
+                    MusicaId = musicaSQL.Id
+                };
+                albumMusica = await _musicaService.CreateAlbumAndMusica(albumMusica);
                 var client = new YoutubeClient();
                 var manifest = await client.Videos.Streams.GetManifestAsync(video.Id);
                 var formato = manifest.GetAudioOnlyStreams().TryGetWithHighestBitrate();

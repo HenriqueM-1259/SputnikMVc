@@ -20,6 +20,7 @@ builder.Services.AddDbContext<MySQLContext>( options =>
 });
 builder.Services.AddScoped<ArtistaService>();
 builder.Services.AddScoped<AlbumService>();
+builder.Services.AddScoped<MusicaService>();
 builder.Services.AddScoped<YoutubeService>();
 builder.Services.AddScoped<YoutubeMusicaHelper>();
 
@@ -36,7 +37,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

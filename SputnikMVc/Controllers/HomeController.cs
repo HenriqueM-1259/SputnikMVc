@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SputnikMVc.Context;
 using SputnikMVc.Models;
 using System.Diagnostics;
 
@@ -7,15 +9,17 @@ namespace SputnikMVc.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly MySQLContext _sqlContext;
+        public HomeController(ILogger<HomeController> logger, MySQLContext mySQLContext)
         {
             _logger = logger;
+            _sqlContext = mySQLContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Artista> artista = await _sqlContext.Artista.OrderBy(x => x.Nome).ToListAsync(); 
+            return View(artista);
         }
 
         public IActionResult Privacy()

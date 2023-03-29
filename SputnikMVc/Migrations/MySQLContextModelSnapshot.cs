@@ -63,6 +63,10 @@ namespace SputnikMVc.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PathImg")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Artista");
@@ -71,13 +75,13 @@ namespace SputnikMVc.Migrations
             modelBuilder.Entity("SputnikMVc.Models.Musica", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
@@ -85,11 +89,9 @@ namespace SputnikMVc.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("PathImage")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("PathMusica")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -139,6 +141,21 @@ namespace SputnikMVc.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("SputnikMVc.Models.ViewModel.AlbumMusica", b =>
+                {
+                    b.Property<int>("AlbumId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MusicaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AlbumId", "MusicaId");
+
+                    b.HasIndex("MusicaId");
+
+                    b.ToTable("albumMusicas");
+                });
+
             modelBuilder.Entity("SputnikMVc.Models.ViewModel.PlaylistMusica", b =>
                 {
                     b.Property<int>("PlaylistId")
@@ -165,15 +182,23 @@ namespace SputnikMVc.Migrations
                     b.Navigation("Artista");
                 });
 
-            modelBuilder.Entity("SputnikMVc.Models.Musica", b =>
+            modelBuilder.Entity("SputnikMVc.Models.ViewModel.AlbumMusica", b =>
                 {
                     b.HasOne("SputnikMVc.Models.Album", "Album")
-                        .WithMany("Musicas")
-                        .HasForeignKey("Id")
+                        .WithMany("AlbumMusica")
+                        .HasForeignKey("AlbumId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SputnikMVc.Models.Musica", "Musica")
+                        .WithMany("AlbumMusica")
+                        .HasForeignKey("MusicaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Album");
+
+                    b.Navigation("Musica");
                 });
 
             modelBuilder.Entity("SputnikMVc.Models.ViewModel.PlaylistMusica", b =>
@@ -197,7 +222,7 @@ namespace SputnikMVc.Migrations
 
             modelBuilder.Entity("SputnikMVc.Models.Album", b =>
                 {
-                    b.Navigation("Musicas");
+                    b.Navigation("AlbumMusica");
                 });
 
             modelBuilder.Entity("SputnikMVc.Models.Artista", b =>
@@ -207,6 +232,8 @@ namespace SputnikMVc.Migrations
 
             modelBuilder.Entity("SputnikMVc.Models.Musica", b =>
                 {
+                    b.Navigation("AlbumMusica");
+
                     b.Navigation("PlaylistMusica");
                 });
 

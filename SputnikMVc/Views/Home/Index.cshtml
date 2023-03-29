@@ -1,15 +1,43 @@
-﻿@{
+﻿@model List<Artista> 
+@{
+
     ViewData["Title"] = "Home Page";
 }
 <div class="card-wrapper">
-    @for (int i = 0; i < 5; i++)
+    @if (Model != null)
     {
-        <div class="card">
-            <img src="https://i.scdn.co/image/ab67616d00001e022b0f29fcb95fea9b86586b38" alt="Artista 1">
-        <h2>Nome do Artista 1</h2>
-        <button class="player-btn"><i class="fa fa-play"></i></button>
-         </div>
-    
+
+
+        @foreach (var item in Model)
+        {
+            <div class="card" id="@item.Id" onclick="LoadAlbum(@item.Id)">
+                <img src="@Url.Content($"{item.PathImg}")" alt="">
+                <h2>@item.Nome</h2>
+                <button class="player-btn" onclick=""><i class="fa fa-play"></i></button>
+            </div>
+        }
+
+    ;
     }
+
 </div>
     
+@section scripts {
+    <script>
+        function LoadAlbum(id){
+            debugger
+                // substitua ID_DO_ALBUM pelo ID desejado
+                var albumId = id
+                // substitua CAMINHO_DO_CONTROLADOR pelo caminho para o seu controlador
+                var url = "Album/index?idArtista=" + albumId;
+                // redireciona para a URL com o ID do álbum como parâmetro
+                window.location.href = url;
+           
+        }
+        //var myDiv = document.querySelector(".card");
+       
+            
+
+       
+    </script>
+}
