@@ -39,5 +39,16 @@ namespace SputnikMVc.Services
             return AlbumMusica;
         }
 
+        public async Task<List<Musica>> GetAllIdAlbum(int id)
+        {
+            List<AlbumMusica> ListMusicaAlbum = _context.albumMusicas.Where(x => x.AlbumId == id).ToList();
+            List<Musica> ListaMusica = new List<Musica>();
+            foreach (var album in ListMusicaAlbum)
+            {
+                ListaMusica.Add(await _context.Musicas.Where(x => x.Id == album.MusicaId).FirstOrDefaultAsync());
+            }
+            return ListaMusica;
+        }
+
     }
 }

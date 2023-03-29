@@ -100,13 +100,36 @@ namespace SputnikMVc.Helpers
                     album.Artista = artista;
                     album.DataCriacao = data;
                     album.Path = resultPath;
+                    album.PathUrlImg = $"~/ArtistaImg/{playlist.Title}.jpg";
                     album = await _albumService.Create(album);
                 }
 
 
                 if (!Directory.Exists(resultPath))
-                {
+                {              
+                    var canalIcon = playlist.Thumbnails.FirstOrDefault();
+                    var IconUrl = canalIcon.Url;
+
+                    //caso nao exista ele vai registrar no sql e criar a pasta
                     Directory.CreateDirectory(resultPath);
+
+                    if (!string.IsNullOrEmpty(IconUrl))
+                    {
+                        var clientHttp = new HttpClient();
+                        var imageBytes = await clientHttp.GetByteArrayAsync(IconUrl);
+
+                        // Use os bytes da imagem como desejar
+
+                        // Salva a imagem na pasta "Artista/Froid"
+
+                        File.WriteAllBytes($"./wwwroot/ArtistaImg/{playlist.Title}.jpg", imageBytes);
+                    }
+                    else
+                    {
+                        // O canal não tem um ícone definido
+                    }
+
+
                 }
                 return album;
             }

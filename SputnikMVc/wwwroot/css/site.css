@@ -273,7 +273,7 @@
 
 
 .card h2 {
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 300;
     margin-bottom: 0px;
 }
@@ -289,14 +289,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    border: none;
+    background:none;
+    border:none;
+    color: #000f;
     margin-right:10px;
-    border-radius: 50%;
-    background-color: #333;
-    color: #fff;
-    font-size: 16px;
+    font-size: 20px;
     transition: all 0.3s ease-in-out;
 }
 

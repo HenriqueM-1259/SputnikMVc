@@ -10,6 +10,7 @@ namespace SputnikMVc.Models
         public int ArtistaId { get; set; }
         public Artista Artista { get; set; }
         public string Path { get; set; }
+        public string PathUrlImg { get; set; }
         public List<AlbumMusica> AlbumMusica { get; set; }
     }
 }
