@@ -19,6 +19,12 @@ namespace SputnikMVc.Controllers
         {
             List<Musica> Musica = await _service.GetAllIdAlbum(idAlbum);
             return View(Musica);
-        }   
+        }  
+        public async Task<IActionResult> GetArquivoMp3([FromQuery]int id)
+        {
+            FileStream fileStreams = await _service.GetIdMusica(id);
+
+            return File(fileStreams, "audio/mpeg");
+        }
     }
 }

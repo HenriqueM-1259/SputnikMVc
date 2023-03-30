@@ -1,0 +1,70 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div id="meu-componente">
+    <audio id="MusicaPlayer" autoplay>
+        <source src="" type="audio/mpeg" />
+    </audio>
+    <!-- Adicione o código HTML e JavaScript para o seu componente aqui -->
+    <div class="player">
+       
+        <div class="info">
+            <img src="https://via.placeholder.com/80x80.png?text=Album+Art" alt="Album Art">
+            <div>
+                <p>Nome da música</p>
+                <p>Nome do artista</p>
+            </div>
+        </div>
+        <div class="controls">
+            <button><i class="fas fa-backward"></i></button>
+            <button class="fas fa-play"> </button>
+            <button class="fas fa-pause"> </button>
+            <button class="fas fa-forward"> </button>
+
+        </div>
+        <div class="progress">
+            <div class="progress-bar"></div>
+        </div>
+        <div class="time">0:00 / 3:45</div>
+    </div>
+</div>
+<script>
+        function playMusica(id) {
+            debugger
+            var MusicaPlayer = document.getElementById('MusicaPlayer');
+            var baseUrl = window.location.protocol + "//" + window.location.hostname;
+            if (window.location.port) {
+                baseUrl += ":" + window.location.port;
+            }
+            debugger
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', `${baseUrl}/Musica/GetArquivoMp3?id=${id}`, true);
+            xhr.responseType = 'arraybuffer';
+
+            xhr.send();
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    debugger
+                    var blob = new Blob([xhr.response],
+                        { type: 'audio/mpeg' });
+                    var url = URL.createObjectURL(blob);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob)
+                    reader.onloadend= () => {
+                        const base64data = reader.result;
+                    localStorage.setItem('audioBa', base64data);
+                    }
+                    //audio.play();
+                    MusicaPlayer.setAttribute('src', url)
+                    MusicaPlayer.play();
+                    var Musi = new Audio(url);
+                    
+                }
+            };
+            
+            
+        }
+    </script>

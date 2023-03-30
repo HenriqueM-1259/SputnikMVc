@@ -10,7 +10,7 @@
 
         @foreach (var item in Model)
         {
-            <div class="card" id="@item.Id" onclick="LoadAlbum(id)">
+            <div class="card" id="@item.Id" onclick="Get('Musica/ListaMusica?idAlbum=' + @item.Id)">
                 <img src="@Url.Content($"{item.PathUrlImg}")" alt="">
                 <h2>@item.Title</h2>
                 <button class="player-btn"><i class="fa fa-play"></i></button>
@@ -21,17 +21,3 @@
     }
 
 </div>
-
-@section scripts {
-    <script>
-        function LoadAlbum(id) {
-            debugger
-            var baseUrl = window.location.protocol + "//" + window.location.hostname;
-            if (window.location.port) {
-                baseUrl += ":" + window.location.port;
-            }
-            var musicaUrl = baseUrl + `/musica/ListaMusica?idAlbum=${id}`;
-            window.location.href = musicaUrl;
-        }
-    </script>
-}

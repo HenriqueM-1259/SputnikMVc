@@ -1,43 +1,72 @@
-﻿@model List<Artista> 
-@{
-
-    ViewData["Title"] = "Home Page";
-}
-<div class="card-wrapper">
-    @if (Model != null)
-    {
-
-
-        @foreach (var item in Model)
-        {
-            <div class="card" id="@item.Id" onclick="LoadAlbum(@item.Id)">
-                <img src="@Url.Content($"{item.PathImg}")" alt="">
-                <h2>@item.Nome</h2>
-                <button class="player-btn" onclick=""><i class="fa fa-play"></i></button>
-            </div>
-        }
-
-    ;
-    }
-
+﻿
+<div id="menu-lateral">
+    <ul>
+        <li><a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Início</a></li>
+        <li><a href="#"><i class="fa fa-search"></i> Buscar</a></li>
+        <li><a href="#"><i class="fa fa-book"></i> Sua biblioteca</a></li>
+        <li><a asp-controller="Artista" asp-action="Create"><i class="fa fa-user-plus"></i>Criar Artista</a></li>
+        <li><a asp-controller="Album" asp-action="Create"><i class="fa fa-user-plus"></i>Criar Album</a></li>
+        <li><a asp-controller="Youtube" asp-action="Create"><i class="fa fa-user-plus"></i>Download musica</a></li>
+        <li><a href="#"><i class="fa fa-plus"></i> Criar playlist</a></li>
+        <li><a href="#"><i class="fa fa-heart"></i> Músicas curtidas</a></li>
+    </ul>
 </div>
-    
-@section scripts {
-    <script>
-        function LoadAlbum(id){
-            debugger
-                // substitua ID_DO_ALBUM pelo ID desejado
-                var albumId = id
-                // substitua CAMINHO_DO_CONTROLADOR pelo caminho para o seu controlador
-                var url = "Album/index?idArtista=" + albumId;
-                // redireciona para a URL com o ID do álbum como parâmetro
-                window.location.href = url;
-           
-        }
-        //var myDiv = document.querySelector(".card");
-       
-            
+<main role="main" class="Global pb-3 mr-5">
+    <div class="space">
+    </div>
+    <div class="Render" id="mostraNaTela" >
 
-       
-    </script>
-}
+    </div>
+
+</main>
+<div class="menu-container">
+    <form class="search-form" action="#" method="get">
+        <label for="search-input" class="sr-only">Pesquisar</label>
+        <div class="search-wrapper">
+            <input type="text" id="search-input" placeholder="Pesquisar">
+            <span class="search-icon"><i class="fa fa-search"></i></span>
+        </div>
+    </form>
+    <div class="user-info">
+        <img src="caminho/para/imagem" alt="Imagem do usuário">
+        <span>Usuário</span>
+    </div>
+</div>
+<script>
+  
+    $(document).load('on',() => {
+        debugger
+        this.Get('Artista/index')
+        verificaMusica()
+    })
+    function Get(url) {
+        debugger
+        $("#title").html(url)
+        console.log($("#title"))
+        url = '@Url.Content("~/")' + url;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (response) {
+                console.log(response)
+                $("#mostraNaTela").html(response)
+            },
+            error: function () {
+                alert('Ocorreu um erro!');
+            }
+        });
+    }
+    
+    function verificaMusica() {
+        var MusicaPlayer = document.getElementById('MusicaPlayer');
+        debugger
+        if (localStorage.getItem('audioURL')) {
+            const audioData = localStorage.getItem('audioURL');
+            var blob = new Blob([audioData],
+                        { type: 'audio/mpeg' });
+          var url = URL.createObjectURL(blob);
+            MusicaPlayer.src = url;
+            MusicaPlayer.play();
+        }
+    }
+</script>

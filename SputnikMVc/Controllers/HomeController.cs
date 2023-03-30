@@ -18,10 +18,14 @@ namespace SputnikMVc.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Artista> artista = await _sqlContext.Artista.OrderBy(x => x.Nome).ToListAsync(); 
-            return View(artista);
+           
+            return View();
         }
-
+        public async Task<IActionResult> ListarArtista()
+        {
+            List<Artista> artista = await _sqlContext.Artista.OrderBy(x => x.Nome).ToListAsync();
+            return PartialView("ListarArtista", artista);
+        }
         public IActionResult Privacy()
         {
             return View();

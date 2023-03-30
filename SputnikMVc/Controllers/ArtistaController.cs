@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SputnikMVc.Context;
 using SputnikMVc.Models;
 using SputnikMVc.Services;
 
@@ -8,17 +10,13 @@ namespace SputnikMVc.Controllers
     public class ArtistaController : Controller
     {
         private readonly ArtistaService _service;
-
-        public ArtistaController(ArtistaService service)
+        private readonly MySQLContext _sqlContext;
+        public ArtistaController(ArtistaService service, MySQLContext sqlContext)
         {
             _service = service;
+            _sqlContext = sqlContext;
         }
         // GET: ArtistaController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         // GET: ArtistaController/Details/5
         public ActionResult Details(int id)
         {
@@ -45,6 +43,11 @@ namespace SputnikMVc.Controllers
             {
                 return View();
             }
+        }
+        public async Task<IActionResult> index()
+        {
+            List<Artista> artista = await _sqlContext.Artista.OrderBy(x => x.Nome).ToListAsync();
+            return View(artista);
         }
 
         // GET: ArtistaController/Edit/5

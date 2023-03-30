@@ -49,6 +49,13 @@ namespace SputnikMVc.Services
             }
             return ListaMusica;
         }
+        public async Task<FileStream> GetIdMusica(int id)
+        {
+            string pastaArtista = "C:/Git/Project/SputnikMVc/SputnikMVc";
+            Musica Musica = await _context.Musicas.Where(x => x.Id == id).FirstOrDefaultAsync();
+            FileStream Streams = new FileStream($"{pastaArtista}/{Musica.PathMusica}.m4a", FileMode.Open);
 
+            return Streams;
+        }
     }
 }

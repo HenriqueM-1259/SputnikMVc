@@ -6,7 +6,6 @@ namespace SputnikMVc.Models
     {
         public Artista()
         {
-            this.Path = $"/{Nome}";
             this.DataCriacao = DateTime.Now;
         }
         public int Id { get; set; }
