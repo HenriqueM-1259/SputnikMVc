@@ -32,6 +32,9 @@
         <span>Usuário</span>
     </div>
 </div>
+<div id="componente-container">
+    @Html.Partial("Player")
+</div>
 <script>
   
     $(document).load('on',() => {
@@ -39,6 +42,53 @@
         this.Get('Artista/index')
         verificaMusica()
     })
+    var MusicaPlayer = document.getElementById('MusicaPlayer');
+    var id = ""
+    MusicaPlayer.addEventListener("timeupdate", function () {
+        var currentTime = MusicaPlayer.currentTime;
+        var duration = MusicaPlayer.duration;
+        console.log(document.getElementById('MusicaPlayer').currentTime)
+        localStorage.setItem('CurrentTime', MusicaPlayer.currentTime);
+        var percent = (currentTime / duration) * 100;
+        document.getElementById('progress-bar').style.width = percent + "%";
+    });
+    MusicaPlayer.addEventListener("ended", function () {
+        if (id != null) {
+            parseInt(id) += 1
+        }
+        playMusica(id)
+
+    });
+    function playMusica(id, CurrentTime) {
+        debugger
+
+        id = id
+        var baseUrl = window.location.protocol + "//" + window.location.hostname;
+        if (window.location.port) {
+            baseUrl += ":" + window.location.port;
+        }
+        debugger
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', `${baseUrl}/Musica/GetArquivoMp3?id=${id}`, true);
+        xhr.responseType = 'arraybuffer';
+
+        xhr.send();
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                debugger
+                var blob = new Blob([xhr.response],
+                    { type: 'audio/mpeg' });
+                var url = URL.createObjectURL(blob);
+                MusicaPlayer.setAttribute('src', url)
+                if (CurrentTime != null)
+                    document.getElementById('MusicaPlayer').currentTime = CurrentTime
+                MusicaPlayer.play();
+
+
+            }
+        };
+        localStorage.setItem('idMusica', id);
+    }
     function Get(url) {
         debugger
         $("#title").html(url)
@@ -60,13 +110,11 @@
     function verificaMusica() {
         var MusicaPlayer = document.getElementById('MusicaPlayer');
         debugger
-        if (localStorage.getItem('audioURL')) {
-            const audioData = localStorage.getItem('audioURL');
-            var blob = new Blob([audioData],
-                        { type: 'audio/mpeg' });
-          var url = URL.createObjectURL(blob);
-            MusicaPlayer.src = url;
-            MusicaPlayer.play();
+        if (localStorage.getItem('idMusica')) {
+            var id = localStorage.getItem('idMusica');
+            var tempoPercorrido = localStorage.getItem('CurrentTime')
+            playMusica(id, tempoPercorrido)
+
         }
     }
 </script>

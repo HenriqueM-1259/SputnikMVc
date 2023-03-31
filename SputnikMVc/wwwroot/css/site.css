@@ -204,11 +204,16 @@
 
         .player .progress-bar {
             height: 4px;
-            width: 30%;
             background-color: #ccc;
             position: absolute;
+            width:10%;
             left: 0;
             top: 0;
+        }
+        .progress-bar {
+            
+            width: 10%;
+           
         }
 
         .player button {

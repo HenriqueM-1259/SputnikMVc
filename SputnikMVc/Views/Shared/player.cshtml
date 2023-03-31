@@ -9,7 +9,7 @@
         <source src="" type="audio/mpeg" />
     </audio>
     <!-- Adicione o código HTML e JavaScript para o seu componente aqui -->
-    <div class="player">
+    <div class="player" id="">
        
         <div class="info">
             <img src="https://via.placeholder.com/80x80.png?text=Album+Art" alt="Album Art">
@@ -26,15 +26,56 @@
 
         </div>
         <div class="progress">
-            <div class="progress-bar"></div>
+            <div class="progress-bar" id="progress-bar"></div>
         </div>
-        <div class="time">0:00 / 3:45</div>
+        <div class="time" id="time">0:00 / 0:0</div>
     </div>
 </div>
 <script>
-        function playMusica(id) {
+    var MusicaPlayer = document.getElementById('MusicaPlayer');
+    var Timer = document.getElementById('time')
+    var timeModificado = "";
+    var id = localStorage.getItem('idMusica')
+   
+    
+         MusicaPlayer.addEventListener("timeupdate", function () {
+             
+        
+            var currentTime = MusicaPlayer.currentTime;
+            var duration = MusicaPlayer.duration;
+            console.log(document.getElementById('MusicaPlayer').currentTime)
+            localStorage.setItem('CurrentTime', MusicaPlayer.currentTime);
+            var percent = (currentTime / duration) * 100;
+
+            var tempoPercorrido = formattedTime(currentTime)
+            var tempoDuracao = formattedTime(duration)
+
+            timeModificado = `${tempoPercorrido} /${tempoDuracao}`
+            Timer.innerText = timeModificado
+            document.getElementById('progress-bar').style.width = percent + "%";
+        });
+    
+   
+   
+    MusicaPlayer.addEventListener("ended", function () {
+        debugger
+        if(id != null){
+            var idInt = parseInt(id) + 1
+            playMusica(idInt)
+        }
+       
+
+    });
+    function formattedTime(currentTime) {
+        var minutes = Math.floor(currentTime / 60);
+        var seconds = Math.floor(currentTime % 60);
+        var formattedTime = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+        return formattedTime
+    }
+    function playMusica(id, CurrentTime) {
             debugger
-            var MusicaPlayer = document.getElementById('MusicaPlayer');
+            
+           id = id
             var baseUrl = window.location.protocol + "//" + window.location.hostname;
             if (window.location.port) {
                 baseUrl += ":" + window.location.port;
@@ -51,20 +92,14 @@
                     var blob = new Blob([xhr.response],
                         { type: 'audio/mpeg' });
                     var url = URL.createObjectURL(blob);
-                    const reader = new FileReader();
-                    reader.readAsDataURL(blob)
-                    reader.onloadend= () => {
-                        const base64data = reader.result;
-                    localStorage.setItem('audioBa', base64data);
-                    }
-                    //audio.play();
                     MusicaPlayer.setAttribute('src', url)
+                if (CurrentTime != null)
+                    document.getElementById('MusicaPlayer').currentTime = CurrentTime
                     MusicaPlayer.play();
-                    var Musi = new Audio(url);
+                   
                     
                 }
             };
-            
-            
+            localStorage.setItem('idMusica', id);
         }
     </script>
