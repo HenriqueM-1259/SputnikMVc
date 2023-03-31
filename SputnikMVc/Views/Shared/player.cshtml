@@ -10,7 +10,7 @@
     </audio>
     <!-- Adicione o código HTML e JavaScript para o seu componente aqui -->
     <div class="player" id="">
-       
+
         <div class="info">
             <img src="https://via.placeholder.com/80x80.png?text=Album+Art" alt="Album Art">
             <div>
@@ -39,8 +39,7 @@
    
     
          MusicaPlayer.addEventListener("timeupdate", function () {
-             
-        
+       
             var currentTime = MusicaPlayer.currentTime;
             var duration = MusicaPlayer.duration;
             console.log(document.getElementById('MusicaPlayer').currentTime)
@@ -93,13 +92,19 @@
                         { type: 'audio/mpeg' });
                     var url = URL.createObjectURL(blob);
                     MusicaPlayer.setAttribute('src', url)
+
                 if (CurrentTime != null)
                     document.getElementById('MusicaPlayer').currentTime = CurrentTime
                     MusicaPlayer.play();
-                   
+                    localStorage.setItem('UrlMusica', url);
                     
                 }
             };
-            localStorage.setItem('idMusica', id);
-        }
+       
+      }
+    function PlayLocalStorage(url, tempoPercorrido){
+        MusicaPlayer.setAttribute('src', url)
+        document.getElementById('MusicaPlayer').currentTime = tempoPercorrido
+        MusicaPlayer.play();
+    }
     </script>
