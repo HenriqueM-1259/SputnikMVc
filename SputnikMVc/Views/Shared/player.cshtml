@@ -1,110 +1,34 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-<div id="meu-componente">
+﻿<div id="meu-componente">
     <audio id="MusicaPlayer" autoplay>
         <source src="" type="audio/mpeg" />
     </audio>
-    <!-- Adicione o código HTML e JavaScript para o seu componente aqui -->
-    <div class="player" id="">
-
+    <div class="player">
         <div class="info">
             <img src="https://via.placeholder.com/80x80.png?text=Album+Art" alt="Album Art">
             <div>
-                <p>Nome da música</p>
-                <p>Nome do artista</p>
+                <p id="nomeMusica"></p>
+                <p id="nomeAuthor"></p>
             </div>
         </div>
-        <div class="controls">
-            <button><i class="fas fa-backward"></i></button>
-            <button class="fas fa-play"> </button>
-            <button class="fas fa-pause"> </button>
-            <button class="fas fa-forward"> </button>
-
+        <div class="GeralControls">
+            <div class="controls">
+                <button class="fas fa-backward"></button>
+                <button class="fas fa-play"></button>
+                <button class="fas fa-forward"></button>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="time" id="time">0:00 / 0:0</div>
         </div>
-        <div class="progress">
-            <div class="progress-bar" id="progress-bar"></div>
+        
+        <div class="Controls-extras">
+            <div class="volume-control">
+                <i onclick="MuteAudio()" class="fas fa-volume-up"></i>
+                <input id="volume-slider" type="range" min="0" max="100" value="50">
+            </div>
         </div>
-        <div class="time" id="time">0:00 / 0:0</div>
     </div>
 </div>
-<script>
-    var MusicaPlayer = document.getElementById('MusicaPlayer');
-    var Timer = document.getElementById('time')
-    var timeModificado = "";
-    var id = localStorage.getItem('idMusica')
-   
-    
-         MusicaPlayer.addEventListener("timeupdate", function () {
-       
-            var currentTime = MusicaPlayer.currentTime;
-            var duration = MusicaPlayer.duration;
-            console.log(document.getElementById('MusicaPlayer').currentTime)
-            localStorage.setItem('CurrentTime', MusicaPlayer.currentTime);
-            var percent = (currentTime / duration) * 100;
 
-            var tempoPercorrido = formattedTime(currentTime)
-            var tempoDuracao = formattedTime(duration)
-
-            timeModificado = `${tempoPercorrido} /${tempoDuracao}`
-            Timer.innerText = timeModificado
-            document.getElementById('progress-bar').style.width = percent + "%";
-        });
-    
-   
-   
-    MusicaPlayer.addEventListener("ended", function () {
-        debugger
-        if(id != null){
-            var idInt = parseInt(id) + 1
-            playMusica(idInt)
-        }
-       
-
-    });
-    function formattedTime(currentTime) {
-        var minutes = Math.floor(currentTime / 60);
-        var seconds = Math.floor(currentTime % 60);
-        var formattedTime = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-        return formattedTime
-    }
-    function playMusica(id, CurrentTime) {
-            debugger
-            
-           id = id
-            var baseUrl = window.location.protocol + "//" + window.location.hostname;
-            if (window.location.port) {
-                baseUrl += ":" + window.location.port;
-            }
-            debugger
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', `${baseUrl}/Musica/GetArquivoMp3?id=${id}`, true);
-            xhr.responseType = 'arraybuffer';
-
-            xhr.send();
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    debugger
-                    var blob = new Blob([xhr.response],
-                        { type: 'audio/mpeg' });
-                    var url = URL.createObjectURL(blob);
-                    MusicaPlayer.setAttribute('src', url)
-
-                if (CurrentTime != null)
-                    document.getElementById('MusicaPlayer').currentTime = CurrentTime
-                    MusicaPlayer.play();
-                    localStorage.setItem('UrlMusica', url);
-                    
-                }
-            };
-       
-      }
-    function PlayLocalStorage(url, tempoPercorrido){
-        MusicaPlayer.setAttribute('src', url)
-        document.getElementById('MusicaPlayer').currentTime = tempoPercorrido
-        MusicaPlayer.play();
-    }
-    </script>
+<script src="~/js/MusicaPlayer.js"></script>

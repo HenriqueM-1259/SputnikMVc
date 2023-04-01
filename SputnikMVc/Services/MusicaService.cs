@@ -49,6 +49,12 @@ namespace SputnikMVc.Services
             }
             return ListaMusica;
         }
+        public async Task<Musica> GetIdMusicaSQL(int id)
+        {
+            
+            Musica Musica = await _context.Musicas.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return Musica;
+        }
         public async Task<FileStream> GetIdMusica(int id)
         {
             string pastaArtista = "C:/Git/Project/SputnikMVc/SputnikMVc";

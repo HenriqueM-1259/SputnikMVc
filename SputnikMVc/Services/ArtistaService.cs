@@ -18,7 +18,7 @@ namespace SputnikMVc.Services
         {
             return await _context.Artista.Where(x => x.Nome == artista.Nome).FirstOrDefaultAsync();
         }
-
+        
         public async Task<Artista> Create(Artista artista)
         {     
             

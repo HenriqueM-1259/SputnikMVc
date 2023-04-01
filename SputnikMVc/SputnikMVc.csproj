@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\Global.js" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 

@@ -1,12 +1,12 @@
 ﻿
 <div id="menu-lateral">
     <ul>
-        <li><a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Início</a></li>
+        <li><a onclick="GetUrl('Artista/index')"><i class="fa fa-home"></i> Início</a></li>
         <li><a href="#"><i class="fa fa-search"></i> Buscar</a></li>
         <li><a href="#"><i class="fa fa-book"></i> Sua biblioteca</a></li>
-        <li><a asp-controller="Artista" asp-action="Create"><i class="fa fa-user-plus"></i>Criar Artista</a></li>
-        <li><a asp-controller="Album" asp-action="Create"><i class="fa fa-user-plus"></i>Criar Album</a></li>
-        <li><a asp-controller="Youtube" asp-action="Create"><i class="fa fa-user-plus"></i>Download musica</a></li>
+        <li><a onclick="GetUrl('Artista/Create')"><i class="fa fa-user-plus"></i>Criar Artista</a></li>
+        <li><a onclick="GetUrl('Album/Create')"><i class="fa fa-user-plus"></i>Criar Album</a></li>
+        <li><a onclick="GetUrl('Youtube/Create')"><i class="fa fa-user-plus"></i>Download musica</a></li>
         <li><a href="#"><i class="fa fa-plus"></i> Criar playlist</a></li>
         <li><a href="#"><i class="fa fa-heart"></i> Músicas curtidas</a></li>
     </ul>
@@ -36,40 +36,7 @@
     @Html.Partial("Player")
 </div>
 <script>
-  
-    $(document).load('on',() => {
-        debugger
-        this.Get('Artista/index')
-        verificaMusica()
+    $(window).load('on',() => {
+        GetUrl('Artista/index')
     })
-
-    function Get(url) {
-        debugger
-        $("#title").html(url)
-        console.log($("#title"))
-        url = '@Url.Content("~/")' + url;
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function (response) {
-                console.log(response)
-                $("#mostraNaTela").html(response)
-            },
-            error: function () {
-                alert('Ocorreu um erro!');
-            }
-        });
-    }
-    
-    function verificaMusica() {
-        var MusicaPlayer = document.getElementById('MusicaPlayer');
-        debugger
-        if (localStorage.getItem('UrlMusica')) {
-            var url = localStorage.getItem('UrlMusica');
-            var tempoPercorrido = localStorage.getItem('CurrentTime')
-            if (url){
-                PlayLocalStorage(url, tempoPercorrido)
-            }
-        }
-    }
 </script>

@@ -10,7 +10,7 @@
 
         @foreach (var item in Model)
         {
-            <div class="card" id="@item.Id" onclick="Get('Musica/ListaMusica?idAlbum=' + @item.Id)">
+            <div class="card" id="@item.Id" onclick="GetUrl('Musica/ListaMusica?idAlbum=' + @item.Id)">
                 <img src="@Url.Content($"{item.PathUrlImg}")" alt="">
                 <h2>@item.Title</h2>
                 <button class="player-btn"><i class="fa fa-play"></i></button>
